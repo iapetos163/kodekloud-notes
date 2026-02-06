@@ -1,0 +1,26 @@
+# Deploy this with kubectl apply -f
+
+# Careful: v1 will not work
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-replicaset
+spec:
+  template:
+    # Pod spec, sans apiVersion+kind
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: frontend
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+  replicas: 3
+  # main differentiator from ReplicationController
+  # Any pods matching this selector
+  # are considered to be within this RS
+  selector:
+    matchLabels:
+      type: frontend
