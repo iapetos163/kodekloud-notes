@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-replicaset
+spec:
+  containers:
+    - name: redis 
+      image: redis
+      # Equivalent to positional arguments to `docker run`
+      args: ["-p", "1234"]
+      # Equivalent to `--entrypoint` to `docker run`
+      command: ['sh']
+      # Env config very similar to ECS
+      env:
+        - name: APP_COLOR
+          value: pink
+        # select a specific env var
+        - name: MY_VAR1
+          valueFrom:
+            # optional: select a specific env var
+            configMapKeyRef:
+              name: myconfigmap
+              key: arbitrarykey
+      envFrom:
+        - configMapRef:
+            name: myconfigmap
+        - secretRef:
+            name: app-secret
+      volumes:
+        name: app-secret-volume
+        # cat /opt/app-secret-volume/DB_Password
+        secret:
+          secretName: app-secret
