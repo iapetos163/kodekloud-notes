@@ -1,21 +1,22 @@
 #Very similar to RS definition
 #A deployment creates an RS with matching properties
+# A deployment lets you "version" an RS
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-replicaset
+  name: blue
 spec:
   template:
     metadata:
-      name: myapp-pod
       labels:
-        app: myapp
-        type: frontend
+        app: blue
     spec:
       containers:
         - name: nginx
           image: nginx
   replicas: 3
+  # Any pods matching this selector
+  # are considered to be within this RS
   selector:
     matchLabels:
-      type: frontend
+      app: blue

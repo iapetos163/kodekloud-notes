@@ -1,0 +1,5 @@
+kind: ResourceQuota
+spec:
+  hard:
+   requests.cpu: 4
+   limits.cpu: 10

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      # This lets us make a custom definition of when a pod will be considered Running
+      readinessProbe:
+        httpGet:
+          path: /health
+          port: 80
+        # Also available (these are actually mutually exclusive)
+        exec:
+          command: ['cat /app/is_ready']
+        
+        # Additional options for readiness check
+        initialDelaySeconds: 10
+        failureThreshold: 8
+        periodSeconds: 5
+      
+      # This monitors the continuing health of a container
+      # after it's become ready
+      # Accepts the same config as readinessProbe
+      livenessProbe: {}

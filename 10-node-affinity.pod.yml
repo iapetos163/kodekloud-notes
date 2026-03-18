@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+spec:
+  containers:
+    - name: redis
+      image: redis
+  # Tolerations are used to allow pods to run on nodes with matching taints
+  tolerations:
+    - key: "arbitrarykey"
+      operator: "Equal"
+      value: "arbitraryvalue"
+      effect: "NoSchedule"
+  # Basic strict node affinity
+  nodeSelector:
+    # These refer to labels on the node
+    "arbitrarykey": "arbitraryvalue"
+  # Advanced node affinity
+  affinity:
+    nodeAffinity:
+      # preferred: does not block scheduling if no matching node is found
+      # required: blocks scheduling if no matching node is found (stays in pending state)
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "arbitrarykey"
+                # In, NotIn, Exists, DoesNotExist
+                operator: "In"
+                values:
+                  - "arbitraryvalue"

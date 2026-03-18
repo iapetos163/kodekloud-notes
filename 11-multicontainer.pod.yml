@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-replicaset
+spec:
+  containers:
+    - name: redis
+      image: redis
+  # init containers run to completion before the main containers start
+  # init containers run sequentially
+  initContainers:
+    - name: init-myservice
+      image: busybox
+      command: ["sh", "-c", 'echo "Hello, I am init container" && sleep 10']
+    - name: mysidecar
+      image: busybox
+      command: ["sh", "-c", 'echo "Hello, I am sidecar container" && sleep 10']
+      # Sidecar containers are differeniated by restartPolicy: Always
+      # Sidecars will start before main containers but will continue running alongside main containers
+      restartPolicy: Always

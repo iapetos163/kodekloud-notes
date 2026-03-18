@@ -4,5 +4,5 @@ metadata:
   name: myapp-replicaset
 spec:
   containers:
-    - name: redis 
+    - name: redis
       image: redis

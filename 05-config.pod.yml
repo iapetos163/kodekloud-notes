@@ -31,3 +31,24 @@ spec:
         # cat /opt/app-secret-volume/DB_Password
         secret:
           secretName: app-secret
+      # Special container runtime config
+      securityContext:
+        runAsUser: 1000
+        capabilities:
+          add: ['NET_ADMIN']
+      resources:
+        requests:
+          memory: "2Gi"
+          cpu: 2
+
+        # Not always a good idea to set CPU limits
+        # If setting limits, also set requests
+        limits:
+          # Exceeding memory limit consistently will terminate the container
+          memory: "4Gi"
+          # CPU will be throttled so limit cannot be exceeded
+          cpu: 2
+  # Analogous to IAM task role
+  serviceAccountName: myserviceaccount
+  # Default: token is mounted into containers 
+  automountServiceAccountToken: false
